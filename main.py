@@ -26,7 +26,7 @@ bot = telebot.TeleBot(env["TG_BOT_TOKEN"])
 db_link = env["DB_LINK"]
 max_filesize = int(env["max_filesize"])
 last_edited = {}
-
+MY_ID = int(env["MY_ID"])
 REKLAMA_MSG = [
     "🔥 Валютный вклад для россиян (до 12% годовых) <a href='https://crypto-fans.club'>crypto-fans.club</a>",
     "🔥 Если думаешь купить или продать криптовалюту, рекомендую <a href='https://cutt.ly/D7rsbVG'>Bybit</a>",
@@ -192,7 +192,7 @@ def download_video(message, url, audio=False):
     send_reklama(message, REKLAMA_MSG, 20)
     with yt_dlp.YoutubeDL(
         {
-            "format": "mp4",
+            # "format": "mp4",
             "outtmpl": "outputs/%(title)s.%(ext)s",
             "progress_hooks": [progress],
             "postprocessors": [
@@ -244,7 +244,7 @@ def download_video(message, url, audio=False):
                 for file in info["requested_downloads"]:
                     os.remove(file["filepath"])
         except Exception as e:
-            print(e)
+            bot.send_message(MY_ID, e)
             if isinstance(e, yt_dlp.utils.DownloadError):
                 bot.edit_message_text(
                     "Неверный URL", message.chat.id, msg.message_id
@@ -260,18 +260,19 @@ def download_video(message, url, audio=False):
 @bot.message_handler(commands=["start", "help"])
 def send_start(message):
     if message.text == "/start":
-        text = """🤖 This bot can download videos and audios from TikTok.
+        text = """🇺🇸 This bot can download videos and music from TikTok.
 Send the link, choose the format and get your file.
 
-🤖 Этот бот может скачивать видео и аудио из ТикТока.
+🇷🇺 Этот бот может скачивать видео и музыку из ТикТока.
 Отправь ссылку, выбери формат и получи свой файл.
 
-/help - О боте
+/help - about bot | о боте
+justsave.app - app | приложение
 
-👇Отправь ссылку и получи свой файл👇
+👇 send me the link | отправь мне ссылку 👇
 """
     elif message.text == "/help":
-        text = """🔥 JustSaveIt_TikTok может скачать для вас видео ролики и аудио из TikTok.
+        text = """🔥 JustSave TikTok может скачать для вас видео ролики и аудио из TikTok.
 
 Как пользоваться:
   1. Зайдите в TikTok.
