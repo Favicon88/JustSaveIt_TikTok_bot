@@ -330,6 +330,7 @@ def download_command(message):
     url_info = urlparse(url)
     if url_info.scheme:
         if url_info.netloc in [
+            "vt.tiktok.com",
             "www.tiktok.com",
             "tiktokcdn.com",
             "tiktok.com",
