@@ -127,9 +127,9 @@ def create_table():
 
 def tiktok_url_validation(url):
     tiktok_regex = (
-        r"(https?://)?(www\.)?"
+        r"(https?:\/\/)?(www\.)?"
         "(vt\.)?(tiktok|musical|tiktokcdn)\.(com|ly)/"
-        "([^&=%\?]{11})"
+        "([^&=%\?]{11})?"
     )
 
     tiktok_regex_match = re.match(tiktok_regex, url)
