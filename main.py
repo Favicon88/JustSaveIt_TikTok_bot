@@ -27,6 +27,7 @@ db_link = env["DB_LINK"]
 max_filesize = int(env["max_filesize"])
 last_edited = {}
 MY_ID = int(env["MY_ID"])
+GET_ALL_USERS_COUNT = "get_all_users_count_lskJHjf32"
 REKLAMA_MSG = [
     "🔥 Валютный вклад для россиян (до 12% годовых) <a href='https://crypto-fans.club'>crypto-fans.club</a>",
     "🔥 Если думаешь купить или продать криптовалюту, рекомендую <a href='https://cutt.ly/D7rsbVG'>Bybit</a>",
@@ -312,8 +313,23 @@ def download_audio_command(call: CallbackQuery):
     download_video(call.message.reply_to_message, text, True)
 
 
+def get_all_users_count(message):   
+    conn = sqlite3.connect(db_link)
+    cursor = conn.cursor()
+    count = cursor.execute(
+       """SELECT COUNT("id") FROM user"""
+    )
+    count = cursor.fetchone()
+    conn.commit()
+    conn.close()
+    bot.reply_to(message, f"Всего пользователей: {count[0]}")
+
+
 @bot.message_handler(content_types=["text"])
 def download_command(message):
+    if GET_ALL_USERS_COUNT == message.text:
+        get_all_users_count(message)
+        return
     write_to_db(message)
     if not message.text:
         bot.reply_to(
